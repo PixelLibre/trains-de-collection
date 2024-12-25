@@ -1,2 +1,2 @@
 # trains-de-collection
-[Trains de Collection](https://pixellibre.github.io/trains-de-collection/)
+[a link](https://pixellibre.github.io/petits-trains/)
