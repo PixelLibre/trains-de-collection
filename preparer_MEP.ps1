@@ -30,6 +30,8 @@ foreach($image in $liste) {
     $fichier = $image.Name;
     $nouveauNom = "$dossier\ID$ID_maximum_$fichier";
     [IO.File]::Move($image.FullName, $nouveauNom);
+    write-host " ";
+    write-host "Renommer : $nouveauNom";
   }
 }
 
