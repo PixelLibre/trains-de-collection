@@ -1,0 +1,51 @@
+body, html {
+	background-color: #eee6f5;
+	height: 100%;
+	overflow: auto;
+}
+
+.entete {
+	background-image: url("./entete.jpg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	height: 200px;
+	left: 0;
+	overflow: auto;
+	position: fixed;
+	top: 0;
+	width: 100%;
+}
+
+.entete-texte {
+  color: #0bbb0b;
+  left: 10%;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.liste-trains {
+	margin-left: 20px;
+	margin-right: 20px;	
+	margin-top: 225px;
+}
+
+.conteneur-train {
+	background-color: #f2efce;
+	border-radius: 32px;
+	display: flex;
+	margin-top: 10px;
+	padding: 5px;
+}
+
+.image-train {
+	border-radius: 32px;
+	height: auto;
+	width: 200px;
+}
+
+.libelle {
+	text-align: right;
+}
