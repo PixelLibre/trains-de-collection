@@ -15,6 +15,12 @@ foreach($image in $liste) {
 
 #Si le CSV n'existe pas, le créer.
 #Sinon, lire le CSV comme référence.
+$ecrire = $null;
+if(-not [IO.File]::Exists("$PSScriptRoot/tableau_trains.csv")) {
+  $ecrire = [IO.StreamWriter]::new("$PSScriptRoot/tableau_trains.csv", $false, [Text.Encoding]::Unicode);
+} else {
+  $ecrire = [IO.StreamWriter]::new("$PSScriptRoot/tableau_trains.csv", $true, [Text.Encoding]::Unicode);
+}
 
 #Pour chaque image, inscrire une ID à partir de l'ID maximum + 1
 #Ajouter une ligne dans le CSV
