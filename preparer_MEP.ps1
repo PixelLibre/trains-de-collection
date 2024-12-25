@@ -13,13 +13,25 @@ foreach($image in $liste) {
   }  
 }
 
+write-host "ID maximum : $ID_maximum";
+write-host "  ";
+
 #Si le CSV n'existe pas, le créer.
 #Sinon, lire le CSV comme référence.
-$ajouter = [IO.File]::Exists("$PSScriptRoot/tableau_trains.csv");
+$ajouter = [IO.File]::Exists("$PSScriptRoot\tableau_trains.csv");
 $ecrire = [IO.StreamWriter]::new("$PSScriptRoot/tableau_trains.csv", $ajouter, [Text.Encoding]::Unicode);
 
 #Pour chaque image, inscrire une ID à partir de l'ID maximum + 1
 #Ajouter une ligne dans le CSV
+foreach($image in $liste) {
+  if($image.Name -notlike "ID[0-9][0-9][0-9][0-9][0-9][0-9]*") {
+    $ID_maximum++;
+    $dossier = [IO.Path]::GetDirectory($image.FullName);
+    $fichier = $image.Name;
+    $nouveauNom = "$dossier\ID$ID_maximum_$fichier";
+    [IO.File]::Move($image.FullName, $nouveauNom);
+  }
+}
 
 #Lire le modele.html
 
