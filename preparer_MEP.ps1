@@ -1,6 +1,17 @@
 #Lister les images
+$liste = dir -file -recurse "$PSScriptRoot/images";
 
 #Pour chaque image, vérifier s'il y a un ID pour trouver le maximum
+$ID_maximum = 0;
+foreach($image in $liste) {
+  $id = $image.Name;
+  $id = $id.substring(3, 6);
+  if($id -as [int]) {
+    if($id -gt $ID_maximum) {
+      $ID_maximum = $id;
+    }
+  }  
+}
 
 #Si le CSV n'existe pas, le créer.
 #Sinon, lire le CSV comme référence.
