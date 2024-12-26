@@ -18,6 +18,8 @@
 }
 
 .entete-texte {
+	background-color: #fffff0;
+	border-radius: 10px;
 	color: #0bbb0b;
 	left: 25%;
 	position: absolute;
