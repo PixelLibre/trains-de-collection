@@ -81,12 +81,12 @@ try {
 			}
 			
 			$ligne = $ligne.Split(";");
-			$identifiant = $ligne[0];
-			$Nom = $ligne[1];
-			$Marque = $ligne[2];
-			$Etat = $ligne[3];
-			$Description = $ligne[4];
-			$Chemin = "./images/$($ligne[5])";
+			$identifiant = $ligne[0].trim('"');
+			$Nom = $ligne[1].trim('"');
+			$Marque = $ligne[2].trim('"');
+			$Etat = $ligne[3].trim('"');
+			$Description = $ligne[4].trim('"');
+			$Chemin = "./images/$($ligne[5].trim('`"'))";
 			
 			$idHTML = $identifiant.Replace("ID", "");
 			$idHTML = $idHTML.trim("0");
