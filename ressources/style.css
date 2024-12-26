@@ -1,4 +1,4 @@
-﻿body, html {
+body, html {
 	background-color: #eee6f5;
 	height: 100%;
 	overflow: auto;
@@ -22,10 +22,16 @@
 	border-radius: 10px;
 	color: #0bbb0b;
 	left: 25%;
+	opacity: 75%;
+	padding: 20px;
 	position: absolute;
 	text-align: center;
 	top: 50%;
 	transform: translate(-50%, -50%);
+}
+
+.entete-texte > h1 {
+	margin:0;
 }
 
 .entete-langue {
