@@ -81,15 +81,17 @@ try {
 			}
 			
 			$ligne = $ligne.Split(";");
-			 $identifiant = $ligne[0];
-			 $Nom = $ligne[1];
-			 $Marque = $ligne[2];
-			 $Etat = $ligne[3];
-			 $Description = $ligne[4];
-			 $Chemin = "./images/$($ligne[5])";
-			 
-			 $occurrences_HTML += "
-				<div class=`"conteneur-train`">
+			$identifiant = $ligne[0];
+			$Nom = $ligne[1];
+			$Marque = $ligne[2];
+			$Etat = $ligne[3];
+			$Description = $ligne[4];
+			$Chemin = "./images/$($ligne[5])";
+			
+			$idHTML = $identifiant.Replace("ID", "");
+			$idHTML = $idHTML.trim("0");
+			$occurrences_HTML += "
+		<div class=`"conteneur-train`" id=`"$idHTML`">
 			<a href=`"$chemin`" target=`"_blank`">
 				<img class=`"image-train`" src=`"$chemin`">
 			</a>
