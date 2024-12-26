@@ -11,9 +11,9 @@ try {
     $largeurFixe = 374;
 
     # Vérifier si le répertoire de sortie existe, sinon le créer
-    $repertoireSortie = "$PSScriptRoot/images/mini";
-    if (-not [IO.Directory]::Exists($repertoireSortie)) {
-        [IO.Directory]::CreateDirectory($repertoireSortie) | Out-Null;
+    $repertoireMini = "$PSScriptRoot/images/mini";
+    if (-not [IO.Directory]::Exists($repertoireMini)) {
+        [IO.Directory]::CreateDirectory($repertoireMini) | Out-Null;
     }
 
     foreach ($image in $liste) {
@@ -31,7 +31,7 @@ try {
         $graphique.DrawImage($imageOrigine, 0, 0, $largeurFixe, $nouvelleHauteur);
 
         # Sauvegarder la nouvelle image
-        $cheminNouvelleImage = "$repertoireSortie/$($image.Name)";
+        $cheminNouvelleImage = "$repertoireMini/$($image.Name)";
         $nouvelleImage.Save($cheminNouvelleImage, [Imaging.ImageFormat]::Jpeg);
 
         # Libérer les ressources

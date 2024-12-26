@@ -8,11 +8,11 @@ try {
 	$liste = Get-ChildItem -Path "$PSScriptRoot/Image à réduire" -File -Recurse;
 
 	# Chemin vers le répertoire de sortie
-	$repertoireSortie = "$PSScriptRoot/images/mini";
+	$repertoireMini = "$PSScriptRoot/images/mini";
 
 	# Vérifier si le répertoire de sortie existe, sinon le créer
-	if (-not [IO.Directory]::Exists($repertoireSortie)) {
-		[IO.Directory]::CreateDirectory($repertoireSortie) | out-null;
+	if (-not [IO.Directory]::Exists($repertoireMini)) {
+		[IO.Directory]::CreateDirectory($repertoireMini) | out-null;
 	}
 
 	foreach ($image in $liste) {
@@ -20,7 +20,7 @@ try {
 		$cheminImage = $image.FullName;
 		
 		# Redimensionner l'image à une largeur de 374 pixels tout en gardant le ratio d'aspect
-		$nouveauChemin = "$repertoireSortie/$($image.Name)";
+		$nouveauChemin = "$repertoireMini/$($image.Name)";
 		& $cheminConvert $cheminImage -resize 374x $nouveauChemin | out-null;
 	}
 
