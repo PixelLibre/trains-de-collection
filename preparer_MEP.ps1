@@ -23,7 +23,7 @@ try {
 	#Si le CSV n'existe pas, le créer.
 	#Sinon, lire le CSV comme référence.
 	$ajouter = [IO.File]::Exists($cheminCSV );
-	$ecrire = [IO.StreamWriter]::new($cheminCSV , $ajouter, [Text.Encoding]::Unicode);
+	$ecrire = [IO.StreamWriter]::new($cheminCSV , $ajouter, [Text.Encoding]::UFT8);
 
 	#Ajouter l'en-tête du CV
 	if(-not $ajouter) {
