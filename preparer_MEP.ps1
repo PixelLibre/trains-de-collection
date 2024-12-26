@@ -9,8 +9,9 @@ try {
 	$ID_maximum = 0;
 	foreach($image in $liste) {
 	  $id = $image.Name;
-	  $id = $id.substring(3, 6);
+	  $id = $id.substring(2, 6);
 	  if($id -as [int]) {
+		$id = [int] $id;
 		if($id -gt $ID_maximum) {
 		  $ID_maximum = [int] $id;
 		}
@@ -19,7 +20,6 @@ try {
 
 	write-host "ID maximum : $ID_maximum";
 	write-host "  ";
-
 	#Si le CSV n'existe pas, le créer.
 	#Sinon, lire le CSV comme référence.
 	$ajouter = [IO.File]::Exists($cheminCSV );
@@ -34,25 +34,33 @@ try {
 	write-host -ForegroundColor DarkYellow "Renseigner les images sans identifiant";
 	write-host "  ";
 
-
 	#Pour chaque image, inscrire une ID à partir de l'ID maximum + 1
 	#Ajouter une ligne dans le CSV
 	foreach($image in $liste) {
-	  if($image.Name -notlike "ID[0-9][0-9][0-9][0-9][0-9][0-9]*") {
-		$ID_maximum++;
-		$dossier = [IO.Path]::GetDirectoryName($image.FullName)
-		$fichier = $image.Name;
-		$idAffichage = "$ID_maximum".PadLeft(6, "0");
-		$fichier = "ID$($idAffichage)_$fichier";
-		$nouveauNom = "$dossier/$fichier";
-		[IO.File]::Move($image.FullName, $nouveauNom);
-		write-host "Renommer : $nouveauNom";
-		write-host " ";
-		
-		$ligne = "$idAffichage;;;;;";
-		$ligne += "$fichier;";
-		$ligne += "$dossier`r`n";
-		$ecrire.Write($ligne);
+		$ligne = "";
+		if($image.Name -notlike "ID[0-9][0-9][0-9][0-9][0-9][0-9]*" -or -not $ajouter) {
+			$ID_maximum++;
+			$dossier = [IO.Path]::GetDirectoryName($image.FullName)
+			$fichier = $image.Name;
+			
+			if($image.Name -notlike "ID[0-9][0-9][0-9][0-9][0-9][0-9]*") {
+				$idAffichage = "$ID_maximum".PadLeft(6, "0");
+				$idAffichage = "ID$idAffichage";
+				$fichier = "$($idAffichage)_$fichier";
+			} else {
+				$idAffichage = $fichier.substring(0, 8);
+				$fichier = "$fichier";
+			}
+
+			$nouveauNom = "$dossier/$fichier";
+			[IO.File]::Move($image.FullName, $nouveauNom);
+			write-host "Renommer : $nouveauNom";
+			write-host " ";
+
+			$ligne = "$idAffichage;;;;;";
+			$ligne += "$fichier;";
+			$ligne += "$dossier`r`n";
+			$ecrire.Write($ligne);
 	  }
 	}
 
@@ -78,7 +86,7 @@ try {
 			 $Marque = $ligne[2];
 			 $Etat = $ligne[3];
 			 $Description = $ligne[4];
-			 $Chemin = "$($ligne[6])/$($ligne[5])";
+			 $Chemin = "./images/$($ligne[5])";
 			 
 			 $occurrences_HTML += "
 				<div class=`"conteneur-train`">
