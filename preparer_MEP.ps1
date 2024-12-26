@@ -145,4 +145,4 @@ try {
 	write-host "Trace: $($_.Exception.StackTrace)" -ForegroundColor Red ; 
 }
 
-read-host "Presser <Entrée> pour teminer";
+read-host "Presser <Entrée> pour terminer";
