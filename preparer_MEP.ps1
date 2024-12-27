@@ -8,10 +8,10 @@ try {
 	
 	$repertoireMini = "$PSScriptRoot/images/mini";
 
-	# Obtenir le nom du système d'exploitation
+	# Obtenir le nom du systÃ¨me d'exploitation
 	$os = $PSVersionTable.OS;
 
-	# Vérifier si le système d'exploitation est Windows ou Ubuntu
+	# VÃ©rifier si le systÃ¨me d'exploitation est Windows ou Ubuntu
 	if ($os -match "Ubuntu") {
 		$os = "ubuntu";
 	} elseif ([string]::IsNullOrEmpty($os)) {
@@ -20,17 +20,17 @@ try {
 		} catch {}
 		if($os -match "Windows") {
 			$os = "windows";
+			# Charger la librairie System.Drawing
+			[Reflection.Assembly]::LoadWithPartialName("System.Drawing") | out-null;
 		} else {
 			$os = "autre";
 		}
-		# Charger la librairie System.Drawing
-		[Reflection.Assembly]::LoadWithPartialName("System.Drawing") | out-null;
 	}
 
 	# Chemin du fichier CSV
 	$cheminCSV = "$PSScriptRoot/tableau_trains.csv";
 	
-	#Dictionnaire des références existantes
+	#Dictionnaire des rÃ©fÃ©rences existantes
 	$lecteur = $null;
 	try {
 		$lecteur = [IO.File]::ReadAllText($cheminCSV, [Text.Encoding]::UTF8);
@@ -42,7 +42,7 @@ try {
 	$premier = $true;
 	foreach($ligne in $lecteur) {
 		if([string]::IsNullOrEmpty($ligne)) { continue; }
-		if($premier) { #Sauter l'en-tête du CSV
+		if($premier) { #Sauter l'en-tÃªte du CSV
 			$premier = $false;
 			continue;
 		}		
@@ -52,7 +52,7 @@ try {
 		$dictionnaireImages[$identifiant] = $ligne;
 	}
 	
-	#Pour chaque image, vérifier s'il y a un ID pour trouver le maximum
+	#Pour chaque image, vÃ©rifier s'il y a un ID pour trouver le maximum
 	$ID_maximum = 0;
 	
 	foreach($image in $liste) {
@@ -75,17 +75,17 @@ try {
 
 	write-host "ID maximum : $ID_maximum";
 	write-host "  ";
-	#Générer le CSV
+	#GÃ©nÃ©rer le CSV
 	$ecrire = [IO.StreamWriter]::new($cheminCSV , $false, [Text.Encoding]::UTF8);
 
-	#Ajouter l'en-tête du CV
-	$entete  = "ID;Nom;Marque et numéro;État;Description;Fichier;Chemin`r`n";
+	#Ajouter l'en-tÃªte du CV
+	$entete  = "ID;Nom;Marque et numÃ©ro;Ã‰tat;Description;Fichier;Chemin`r`n";
 	$ecrire.Write($entete);
 
-	write-host -ForegroundColor DarkYellow "Écrire le CSV à jour";
+	write-host -ForegroundColor DarkYellow "Ã‰crire le CSV Ã  jour";
 	write-host "  ";
 
-	#Pour chaque image, inscrire un ID à partir de l'ID maximum + 1
+	#Pour chaque image, inscrire un ID Ã  partir de l'ID maximum + 1
 	#Ajouter une ligne dans le CSV
 	foreach($image in $liste) {
 		$ligne = "";
@@ -123,7 +123,7 @@ try {
 		
 		$ecrire.Write($ligne);
 
-		#Créer l'image miniature si elle n'existe pas
+		#CrÃ©er l'image miniature si elle n'existe pas
 		if(-not [IO.File]::Exists("$repertoireMini/$nomFichier")) {
 			$largeurFixe = 374;
 			$nouveauChemin = "$repertoireMini/$nomFichier";
@@ -143,7 +143,7 @@ try {
 					$ratio = $imageOrigine.Height / $imageOrigine.Width;
 					$nouvelleHauteur = [int] ($largeurFixe * $ratio);
 
-					# Créer une nouvelle image redimensionnée
+					# CrÃ©er une nouvelle image redimensionnÃ©e
 					$nouvelleImage = [Drawing.Bitmap]::new($largeurFixe, $nouvelleHauteur);
 					$graphique = [Drawing.Graphics]::FromImage($nouvelleImage);
 					$graphique.DrawImage($imageOrigine, 0, 0, $largeurFixe, $nouvelleHauteur);
@@ -151,7 +151,7 @@ try {
 					# Sauvegarder la nouvelle image
 					$nouvelleImage.Save($nouveauChemin, [Drawing.Imaging.ImageFormat]::Jpeg);
 
-					# Libérer les ressources
+					# LibÃ©rer les ressources
 					$imageOrigine.Dispose();
 					$nouvelleImage.Dispose();
 					$graphique.Dispose();
@@ -160,7 +160,7 @@ try {
 				"ubuntu" {
 					$cheminConvert = "/usr/bin/convert";
 					
-					# Redimensionner l'image à une largeur de 374 pixels tout en gardant le ratio d'aspect
+					# Redimensionner l'image Ã  une largeur de 374 pixels tout en gardant le ratio d'aspect
 					& $cheminConvert $cheminImage -resize 374x $nouveauChemin | out-null;
 				}
 			}
@@ -169,12 +169,12 @@ try {
 
 	$ecrire.Dispose();
 
-	#Mettre à jour le dernier ID utilisé
+	#Mettre Ã  jour le dernier ID utilisÃ©
 	$ecrire = [IO.StreamWriter]::new($lien_dernier_ID, $false, [Text.Encoding]::UTF8);
 	$ecrire.Write($ID_maximum);
 	$ecrire.Dispose();
 
-	write-host -ForegroundColor DarkYellow "Génération de index.html";
+	write-host -ForegroundColor DarkYellow "GÃ©nÃ©ration de index.html";
 	write-host " ";
 
 	#Pour chaque ligne du CSV construire l'occurrence de train en HTML
@@ -183,7 +183,7 @@ try {
 	try {
 		$premier = $true;
 		while (($ligne = $lecteur.ReadLine()) -ne $null) {
-			if($premier -or [string]::IsNullOrEmpty($ligne)) { #Sauter l'en-tête du CSV ou les lignes vides
+			if($premier -or [string]::IsNullOrEmpty($ligne)) { #Sauter l'en-tÃªte du CSV ou les lignes vides
 				$premier = $false;
 				continue;
 			}
@@ -216,11 +216,11 @@ try {
 					<td>$Nom</td>
 				</tr>
 				<tr>
-					<td class=`"libelle`"><u>Marque et numéro:</u></td>
+					<td class=`"libelle`"><u>Marque et numÃ©ro:</u></td>
 					<td>$Marque</td>
 				</tr>
 				<tr>
-					<td class=`"libelle`"><u>État:</u></td>
+					<td class=`"libelle`"><u>Ã‰tat:</u></td>
 					<td>$Etat</td>
 				</tr>				
 				<tr>
@@ -244,11 +244,11 @@ try {
 	}
 
 	#Lire le modele.html
-	#Remplacer ?occurrences_de_train dans le modèle par les occurrences constuites
+	#Remplacer ?occurrences_de_train dans le modÃ¨le par les occurrences constuites
 	$modele = [IO.File]::ReadAllText("$PSScriptRoot/modele.html");
 	$modele = $modele.Replace("?occurrences_de_train", "$occurrences_HTML");
 
-	#Écrire le résultat dans index.html
+	#Ã‰crire le rÃ©sultat dans index.html
 	$ecrire = [IO.StreamWriter]::new("$PSScriptRoot/index.html" , $false, [Text.Encoding]::Unicode);
 	$ecrire.Write($modele);
 	$ecrire.Dispose();
@@ -259,4 +259,4 @@ try {
 	write-host "Trace: $($_.Exception.StackTrace)" -ForegroundColor Red ; 
 }
 
-read-host "Presser <Entrée> pour terminer";
+read-host "Presser <EntrÃ©e> pour terminer";
