@@ -42,11 +42,13 @@ var remonterLien = document.querySelector("#remonter-lien");
 		// Mettre à jour le contenu du div éditable
 		filtreTexte.innerText = valeur;
 
-		// Restaurer la position du curseur
-		intervalle.setStart(filtreTexte.childNodes[0], Math.min(debutCurseur, filtreTexte.innerText.length));
-		intervalle.collapse(true);
-		selection.removeAllRanges();
-		selection.addRange(intervalle);
+		try {
+			// Restaurer la position du curseur
+			intervalle.setStart(filtreTexte.childNodes[0], Math.min(debutCurseur, filtreTexte.innerText.length));
+			intervalle.collapse(true);
+			selection.removeAllRanges();
+			selection.addRange(intervalle);
+		} catch (erreur) {}
 	}
 	
 	//Aller à l'identifiant saisi
