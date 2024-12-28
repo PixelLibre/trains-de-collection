@@ -19,7 +19,8 @@
 
 </div>	
 <div class="filtre">
-	<input type="text" id="filtre-texte" placeholder="Numéro d'ID" />
+	<!--input type="text" id="filtre-texte" placeholder="Numéro d'ID" /-->
+	<div contenteditable="true" id="filtre-texte" placeholder="Numéro d'ID"></div> 
 	<a href="#" id="filtre-lien" class="filtre-bouton">Go</a>
 	<a href="#" id="remonter-lien" class="filtre-bouton">⇧</a>
 </div>
@@ -30,12 +31,27 @@ var remonterLien = document.querySelector("#remonter-lien");
 
 	// Supprimer tout ce qui n'est pas un chiffre 
 	filtreTexte.oninput = function() {
-		this.value = this.value.replace(/[^0-9]/g, '');
+		var selection = window.getSelection();
+		var intervalle = document.createRange();
+		var debutCurseur = selection.getRangeAt(0).startOffset;
+
+		// Obtenir le contenu du div éditable
+		var valeur = filtreTexte.innerText;
+		// Remplacer les caractères non numériques
+		valeur = valeur.replace(/[^0-9]/g, '');
+		// Mettre à jour le contenu du div éditable
+		filtreTexte.innerText = valeur;
+
+		// Restaurer la position du curseur
+		intervalle.setStart(filtreTexte.childNodes[0], Math.min(debutCurseur, filtreTexte.innerText.length));
+		intervalle.collapse(true);
+		selection.removeAllRanges();
+		selection.addRange(intervalle);
 	}
 	
 	//Aller à l'identifiant saisi
 	function allerAID() {
-		var idSaisi = filtreTexte.value;
+		var idSaisi = filtreTexte.innerText;
 		var element = document.getElementById(idSaisi);
 		if (element) {
 			element.scrollIntoView({ behavior: 'smooth' });
