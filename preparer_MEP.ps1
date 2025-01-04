@@ -1,3 +1,6 @@
+# Charger la librairie System.Drawing
+[Reflection.Assembly]::LoadWithPartialName("System.Drawing") | out-null;
+
 try {
 	#Lister les images
 	$liste = dir -File -Recurse "$PSScriptRoot/images" |
@@ -20,8 +23,6 @@ try {
 		} catch {}
 		if($os -match "Windows") {
 			$os = "windows";
-			# Charger la librairie System.Drawing
-			[Reflection.Assembly]::LoadWithPartialName("System.Drawing") | out-null;
 		} else {
 			$os = "autre";
 		}
@@ -136,25 +137,28 @@ try {
 
 			switch($os) {
 				"windows" {
-					# Charger l'image
-					$imageOrigine = [Drawing.Image]::FromFile($cheminImage);
+					try {
+						
+						# Charger l'image
+						$imageOrigine = [Drawing.Image]::FromFile($cheminImage);
 
-					# Calculer les nouvelles dimensions en gardant le ratio d'aspect
-					$ratio = $imageOrigine.Height / $imageOrigine.Width;
-					$nouvelleHauteur = [int] ($largeurFixe * $ratio);
+						# Calculer les nouvelles dimensions en gardant le ratio d'aspect
+						$ratio = $imageOrigine.Height / $imageOrigine.Width;
+						$nouvelleHauteur = [int] ($largeurFixe * $ratio);
 
-					# Créer une nouvelle image redimensionnée
-					$nouvelleImage = [Drawing.Bitmap]::new($largeurFixe, $nouvelleHauteur);
-					$graphique = [Drawing.Graphics]::FromImage($nouvelleImage);
-					$graphique.DrawImage($imageOrigine, 0, 0, $largeurFixe, $nouvelleHauteur);
+						# Créer une nouvelle image redimensionnée
+						$nouvelleImage = [Drawing.Bitmap]::new($largeurFixe, $nouvelleHauteur);
+						$graphique = [Drawing.Graphics]::FromImage($nouvelleImage);
+						$graphique.DrawImage($imageOrigine, 0, 0, $largeurFixe, $nouvelleHauteur);
 
-					# Sauvegarder la nouvelle image
-					$nouvelleImage.Save($nouveauChemin, [Drawing.Imaging.ImageFormat]::Jpeg);
+						# Sauvegarder la nouvelle image
+						$nouvelleImage.Save($nouveauChemin, [Drawing.Imaging.ImageFormat]::Jpeg);
 
-					# Libérer les ressources
-					$imageOrigine.Dispose();
-					$nouvelleImage.Dispose();
-					$graphique.Dispose();
+						# Libérer les ressources
+						$imageOrigine.Dispose();
+						$nouvelleImage.Dispose();
+						$graphique.Dispose();
+					} catch {}
 				}
 				
 				"ubuntu" {
@@ -209,23 +213,23 @@ try {
 			<table>
 				<tr>
 					<td class=`"libelle`"><u>ID:</u></td>
-					<td>$identifiant</td>
+					<td class=`"donnee`">$identifiant</td>
 				</tr>
 				<tr>
 					<td class=`"libelle`"><u>Nom:</u></td>
-					<td>$Nom</td>
+					<td class=`"donnee`">$Nom</td>
 				</tr>
 				<tr>
 					<td class=`"libelle`"><u>Marque et numéro:</u></td>
-					<td>$Marque</td>
+					<td class=`"donnee`">$Marque</td>
 				</tr>
 				<tr>
 					<td class=`"libelle`"><u>État:</u></td>
-					<td>$Etat</td>
+					<td class=`"donnee`">$Etat</td>
 				</tr>				
 				<tr>
 					<td class=`"libelle`"><u>Description:</u></td>
-					<td>$Description</td>
+					<td class=`"donnee`">$Description</td>
 				</tr>
 			</table>
 		</div>`r`n`r`n";
